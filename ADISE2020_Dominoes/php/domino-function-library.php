@@ -1,4 +1,5 @@
 <?php 
+
     //creating an assosiative array 
     function deck(){
         for ($i = 0; $i <= 6; $i++) {
@@ -123,7 +124,7 @@
 
 
     function nextTurn($state) {
-        $state["current-player"] ^= 1; //basically it functions as an NAND gate 0-0=1 // 1-1=0
+        $state["current-player"] ^= 1; //basically it functions as an XNOR gate 0-0=1 // 1-1=0
         return $state;
     }
     
@@ -214,6 +215,48 @@
         }
 
     }
+
+    
+    function stateToJSON($state){
+        $jsonState = json_encode($state);
+        return $jsonState;
+    }
+
+
+    function jsonToState($jsonState){
+        $newState = json_decode($jsonState, true);
+        return $newState;
+    }
+
+
+/**
+    function pileToJSON($state){
+        $pile = $state["deck"];
+        $jsonPile = json_encode($pile);
+        return $jsonPile;
+    }
+
+    
+    function jsonToPile($jsonPile){
+        $newPile = json_decode($jsonPile, true);
+        $state["deck"] = $newPile;
+        return $state;
+    }
+
+    function handToJSON($state, $playerOffset){
+        $hand = $state["players"][$playerOffset]["hand"];
+        $jsonHand = json_encode($hand);
+        return $jsonHand;
+    }
+
+    
+    function jsonTohand($jsonHand, $playerOffset){
+        $newHand = json_decode($jsonHand, true);
+        $state["players"][$playerOffset]["hand"] = $newHand;
+        return $state;
+    }
+
+ */
 
 
 ?>
