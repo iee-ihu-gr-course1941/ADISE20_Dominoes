@@ -139,6 +139,7 @@
         return $state["players"][$playerIndex]["hand"];
     }
 
+
     function getCurrentPlayerId($state) {
         $playerIndex = $state["current-player"];
         return $state["players"][$playerIndex]["id"];
@@ -299,7 +300,6 @@
         }
 
     }
-
     
     function stateToJSON($state){
         $jsonState = json_encode($state);
@@ -310,6 +310,23 @@
     function jsonToState($jsonState){
         $newState = json_decode($jsonState, true);
         return $newState;
+    }
+
+    function getPlayerHandToJSON($state,$name) {
+        if($state["players"][0]["id"]==$name){
+            $index=0;
+        }else{
+            $index=1;
+        }
+        $hand = $state["players"][$index]["hand"];
+        $jsonHand = json_encode($hand);
+        return $jsonHand;
+    }
+
+    function getBoardToJSON($state) {
+        $board = $state["board"];
+        $jsonBoard = json_encode($board);
+        return $jsonBoard;
     }
 
 
