@@ -79,7 +79,7 @@
         $state = chooseWhoPlaysFirst($state);
         if($state["current-player"] == -1){
             do {
-                redraw($state);
+                $state = redraw($state);
             }while($state["current-player"] == -1);
         }
         return $state;
