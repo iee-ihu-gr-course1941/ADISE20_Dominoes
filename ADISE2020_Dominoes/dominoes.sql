@@ -34,11 +34,18 @@ CREATE TABLE `players` (
   `password` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- table thas has all the active users/players 
+
+CREATE TABLE `Active_players` (
+  `username` varchar(20) NOT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `state`(
   `gameID` INT(6) PRIMARY KEY AUTO_INCREMENT,
-  `currentState` VARCHAR(65535)
+  `currentState` VARCHAR(65535),
+  `player1` varchar(20) NOT NULL,
+  `player2` varchar(20) NOT NULL
 )
 
 
