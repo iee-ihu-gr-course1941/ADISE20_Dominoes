@@ -1,45 +1,6 @@
 <?php
 
-
-include 'domino-function-library.php';
-
-
-$state = dominoState(['jack','jill']);
-printCurrentPlayerHand($state);
-
-
-$JSONstate = stateToJSON($state);
-
-insertTableFromStateWithoutGameID($JSONstate);
-/*
-$hand = getCurrentPlayerHand($state);
-$domino = array_pop($hand);
-$front = $domino["front"];
-$back = $domino["back"];
-$state = playDomino($state,$front,$back);
-
-$JSONstate = stateToJSON($state);
-/*
-updateTableFromState($JSONstate,'4');
-
-
-$state = dominoState(['n','m']);
-echo "<br>";
-echo "<br>";
-echo "<br>";
-print($state["current-player"]);
-echo "<br>";
-echo "<br>";
-printCurrentPlayerHand($state);
-
-$newjsonstate = selectState('4');
-echo "<br>";
-echo "<br>";
-
-echo "<br>";
-$state = jsonToState($newjsonstate);
-var_dump($state);
-*/
+//include 'domino-function-library.php';
 
     function insertTableFromState($JSONstate,$gameID){ 
         if(!isset($connected)||$connected == false){
@@ -51,12 +12,12 @@ var_dump($state);
     
     }
 
-    function insertTableFromStateWithoutGameID($JSONstate){ 
+    function insertTableFromStateWithoutGameID($JSONstate,$player1,$player2){ 
         if(!isset($connected)||$connected == false){
             require "../dbconnect.php";
         }
 
-        $query = "INSERT INTO state (currentState) VALUES ('$JSONstate')";
+        $query = "INSERT INTO state (player1, player2, currentState) VALUES ('$player1', '$player2', '$JSONstate')";
         mysqli_query ($dbcon, $query);
     
     }
