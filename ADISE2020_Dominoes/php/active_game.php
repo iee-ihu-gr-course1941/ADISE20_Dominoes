@@ -8,6 +8,8 @@
 	if (session_status() !== PHP_SESSION_ACTIVE) {
 		session_start();
 	}
+	$_SESSION['active_G'] = false;
+	
 	//brings the active users from the DB to find a second player
 	$query = "SELECT player2, player1 FROM state";
 	$activeG_check = $dbcon->query($query);
@@ -24,13 +26,10 @@
 		
 			if($activeG_row['player2'] == $_SESSION['user']){
 				
-				$_SESSION['player'] = $_SESSION['user'];
-				$_SESSION['user'] = $activeP_row['player1'];
-				
-				$player1 = $_SESSION['user'];
-				$player2 = $_SESSION['player'];
+				$_SESSION['player2'] = $_SESSION['user'];
+				$_SESSION['player1'] = $activeP_row['player1'];
 	
-				$query = "SELECT gameID FROM state WHERE player1 = $player1 AND player2 = $player2";
+				$query = "SELECT gameID FROM state WHERE player1 = '$_SESSION['player1']' AND player2 = '$_SESSION['player2']'";
 				$game_check = $dbcon->query($query);
 				if ($game_check == true) {
 					$game_numrows = $game_check->num_rows;
@@ -50,6 +49,7 @@
 				$state = jsonToState($JSONstate);
 				
 				$found = true;
+				$_SESSION['active_G'] = true;
 			}
 		}
 	}

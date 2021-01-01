@@ -14,9 +14,7 @@ if (true && $connected) {
 	}
 	
 	$query = "SELECT username FROM players WHERE BINARY(username) = '$post_username' AND BINARY(password) = '$post_password'";
-	//echo $post_username.'<br/>';
-	//echo $post_password.'<br/>';
-	//echo $query.'<br/>';
+
 	$login_check = $dbcon->query($query);
 	if ($login_check == true) {
 		$login_numrows = $login_check->num_rows;
@@ -24,9 +22,6 @@ if (true && $connected) {
 	else {
 		echo $dbcon->error();
 	}
-	//$login_row = array();
-	//$login_row['id'] = 100;
-	//$login_numrows = 0;
 	
 	if (session_status() !== PHP_SESSION_ACTIVE) {
 		session_start();
@@ -38,11 +33,12 @@ if (true && $connected) {
 		if (!empty($login_row)) {
 			$_SESSION['status'] = 1;
 			$_SESSION['user'] = $login_row['username'];
+			$_SESSION['player1'] = $login_row['username'];
 			$_SESSION['loginMessage'] = 'Hello '.$post_username.'! Welcome to dominoes game.';
 			//adds user to the list of active players
-			$user =$login_row['username'];
-			$query = "INSERT INTO Active_players (username) VALUES ('$user')";
-        	$dbcon->query($query);		
+			$_SESSION['player1'] = $login_row['username'];
+			$query = "INSERT INTO Active_players (username) VALUES ('$_SESSION['player1']')";
+        	$dbcon->query($query);	
         }
 	}
 	elseif ($login_numrows == 0) {

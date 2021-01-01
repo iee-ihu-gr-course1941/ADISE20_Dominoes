@@ -6,9 +6,8 @@
 		if ($_SESSION['status'] == 1) {
 		echo $_SESSION['loginMessage'];
 		
-		include "active_players.php";
 		?>
-			<form action="../api.html" method="POST">					
+			<form action="active_players.php" method="POST">					
 				<label for="newgame"><button class="button2">new game</button></label><br/>
 				<input type="submit" name="newgame" style="display:none">
 			</form>
