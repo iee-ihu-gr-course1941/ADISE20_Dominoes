@@ -3,7 +3,7 @@
     //creating an assosiative array 
     function deck(){
         if(!isset($connected)||$connected == false){
-            require "../dbconnect.php";
+            require "dbconnect.php";
         }
         //request the number series 0-6 from the databace
         
