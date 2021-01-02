@@ -2,8 +2,6 @@
 	if(!isset($connected)||$connected == false){
 	require "dbconnect.php";
 	}		
-	require 'domino-function-library.php';
-	require 'state-sql.php';
 	
 	if (session_status() !== PHP_SESSION_ACTIVE) {
 		session_start();
@@ -22,14 +20,17 @@
 	}
 	if ($activeG_numrows > 1) {
 		$found = false;
-		while(($activeG_row = $activeP_check->fetch_assoc())&& $found != true ) {
+		while(($activeG_row = $activeG_check->fetch_assoc())&& $found != true ) {
 		
 			if($activeG_row['player2'] == $_SESSION['user']){
 				
 				$_SESSION['player2'] = $_SESSION['user'];
 				$_SESSION['player1'] = $activeP_row['player1'];
+
+				$player1 = $_SESSION['player1'];
+				$player2 = $_SESSION['player2'];
 	
-				$query = "SELECT gameID FROM state WHERE player1 = '$_SESSION['player1']' AND player2 = '$_SESSION['player2']'";
+				$query = "SELECT gameID FROM state WHERE player1 = '$player1' AND player2 = '$player2'";
 				$game_check = $dbcon->query($query);
 				if ($game_check == true) {
 					$game_numrows = $game_check->num_rows;
@@ -42,9 +43,9 @@
 					//id should not be empty
 					if (!empty($game_row)) {
 							$_SESSION['gameID'] = $game_row['gameID'];
-						}
 					}
 				}
+				
 				$JSONstate = selectState($_SESSION['gameID']);
 				$state = jsonToState($JSONstate);
 				
@@ -61,6 +62,6 @@
 	}
 	
 	session_write_close();
-	
-	die;
+
+	exit;
 ?>

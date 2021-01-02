@@ -34,7 +34,12 @@ if (isset($_GET['button'])) {
 	updateTableFromState($JSONstate,$_SESSION['gameID']);
 	
 	session_write_close();
-	
+
+/*
+	if($state["end"]==True){
+		header('Location:');
+	}
+	*/
 	echo $json_output;
 }
 die;

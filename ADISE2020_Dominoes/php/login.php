@@ -37,7 +37,8 @@ if (true && $connected) {
 			$_SESSION['loginMessage'] = 'Hello '.$post_username.'! Welcome to dominoes game.';
 			//adds user to the list of active players
 			$_SESSION['player1'] = $login_row['username'];
-			$query = "INSERT INTO Active_players (username) VALUES ('$_SESSION['player1']')";
+			$username1 = $_SESSION['player1'];
+			$query = "INSERT INTO Active_players (username) VALUES ('$username1')";
         	$dbcon->query($query);	
         }
 	}

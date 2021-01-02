@@ -9,7 +9,6 @@
         
         $query = "SELECT numTiles FROM tiles";
         $result = $dbcon->query($query);
-        
         //create temporary array to store them
         $temp = array();
         
