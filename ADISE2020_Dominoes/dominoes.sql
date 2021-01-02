@@ -36,9 +36,7 @@ CREATE TABLE `players` (
 
 -- table thas has all the active users/players 
 
-CREATE TABLE `Active_players` (
-  `username` varchar(20) NOT NULL,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `Active_players`(`username` VARCHAR(20) PRIMARY KEY NOT NULL)
 
 
 CREATE TABLE `state`(

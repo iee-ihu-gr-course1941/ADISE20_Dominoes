@@ -48,7 +48,7 @@
 							var hand = document.getElementById("hand");
 							
 							var json_response = JSON.parse(this.responseText);
-							//console.log(this.responseText);
+							console.log(this.responseText);
 							
 							if (json_response.hand !== undefined && json_response.hand !== null) {
 								hand.innerHtml = json_response.hand;
