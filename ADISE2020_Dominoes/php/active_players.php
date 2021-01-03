@@ -47,7 +47,7 @@ if($_SESSION['active_G'] == false){
 		$_SESSION['loginMessage'] = 'Connection error.';
 	}
 	
-	//takes the ganeID from the DB and adds it to session.
+	//takes the gameID from the DB and adds it to session.
 	
 	$query = "SELECT gameID FROM state WHERE player1 = '$player1' AND player2 = '$player2'";
 	$game_check = $dbcon->query($query);
