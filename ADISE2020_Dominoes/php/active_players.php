@@ -24,7 +24,7 @@ if($_SESSION['active_G'] == false){
 	else {
 		echo $dbcon->error();
 	}
-	if ($activeP_numrows > 1) {
+	if ($activeP_numrows > 0) {
 		$activeP_row = $activeP_check->fetch_assoc();
 		//if not in a loop it returns only the first row.
 		if(!empty($activeP_row)){
@@ -35,6 +35,7 @@ if($_SESSION['active_G'] == false){
 	
 			$state = dominoState([$player1,$player2]);
 			$JSONstate = stateToJSON($state);
+			//$_SESSION['current_P'] = $state['current-player'];
 			insertTableFromStateWithoutGameID($JSONstate,$player1,$player2);
 			
 			$query = "DELETE FROM Active_players WHERE username = '$player1'";
@@ -43,7 +44,7 @@ if($_SESSION['active_G'] == false){
 			$dbcon->query($query);
 		}
 	}
-	elseif ($activeP_numrows == 1) {
+	elseif ($activeP_numrows == 0) {
 		$_SESSION['loginMessage'] = 'Not enought players online.';
 	}
 	else {
@@ -56,7 +57,6 @@ if($_SESSION['active_G'] == false){
 		
 		$player1=$_SESSION['player1'];
 		$player2=$_SESSION['player2'];
-		
 		$query = "SELECT gameID FROM state WHERE player1 = '$player1' AND player2 = '$player2'";
 		$game_check = $dbcon->query($query);
 		
