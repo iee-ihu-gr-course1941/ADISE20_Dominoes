@@ -23,7 +23,7 @@
         }
         else
         {
-            echo 'error';
+            //echo 'error';
         }
         //dhmiourgei to deck
         $tilesRange = count($possible_tiles);
@@ -86,7 +86,6 @@
 
     //call at the start of the game if we need a redraw
     function redraw($state){
-        print_r("wait while we are redrawing");
         $deck = deck();
         $startingDeck = shuffleDeck($deck);
         $state["players"][0]["hand"] = take(6, $startingDeck);
@@ -174,9 +173,9 @@
         $state["pile"] = drop(1, $oldPile);
         $state = addDominoToPlayer($state, take(1, $oldPile));
         isItOver($state);
-        return $state;
+        return nextTurn($state);
     }   
-    
+    /*
     function printBoard($state){
         var_dump($state["board"]);
     }
@@ -185,7 +184,7 @@
         $playerIndex = $state["current-player"];
         var_dump($state["players"][$playerIndex]["hand"]);
     }
-
+    */
 
     function nextTurn($state) {
         $state["current-player"] ^= 1; //basically it functions as an XNOR gate 0-0=1 // 1-1=0
@@ -208,7 +207,7 @@
                 array_unshift($state["board"],$domino);
             }else{
                 //add maybe a pop up window for illegal move
-                echo ("invalid play");
+                //echo ("invalid play");
             }
         }
         return $state;
@@ -227,6 +226,9 @@
         $domino = ["front" => $front, "back" => $back];
         $newDomino = flipDomino($domino);
         $dominoIndex = findDominoInHand($state,$domino);
+        if($dominoIndex == -1){
+            return $state;
+        }
         $playerIndex = $state["current-player"];
         $state["players"][$playerIndex]["hand"][$dominoIndex] = $newDomino;
         return $state;
@@ -239,7 +241,6 @@
                 return $num1;
             }
         }
-        echo"there was an error try again";
         return -1;
     }
 
@@ -297,7 +298,7 @@
         }elseif($adderPlayer2 > $adderPlayer1){
             return 1;
         }else{
-            echo "there was an error";
+            //echo "there was an error";
         }
 
     }
