@@ -7,12 +7,12 @@ if(!isset($connected)||$connected == false){
 if (session_status() !== PHP_SESSION_ACTIVE) {
 		session_start();
 }
-
+	
 	$JSONstate = selectState($_SESSION['gameID']);
 	$state = jsonToState($JSONstate);
 
 if (isset($_GET['button'])) {
-	
+
 	$json_output = array();
 	if ($_GET['button'] == "start"){
 		$json_output['hand'] = getPlayerHandToJSON($state,$_SESSION['player1']);
@@ -23,24 +23,24 @@ if (isset($_GET['button'])) {
 		$json_output['hand'] = getPlayerHandToJSON($state,$_SESSION['player1']);
 	}
 	else if ($_GET['button'] == "flip"){
-		flipDominoInMyHand($state, $_GET['front'] , $_GET['back'])
+		flipDominoInMyHand($state, $_GET['front'] , $_GET['back']);
 		$json_output['hand'] = getPlayerHandToJSON($state,$_SESSION['player1']);
 	}
 	else if ($_GET['button'] == "draw"){
-		takeFromPile($state)
+		takeFromPile($state);
 		$json_output['hand'] = getPlayerHandToJSON($state,$_SESSION['player1']);
 	}
 	$JSONstate = stateToJSON($state);
 	updateTableFromState($JSONstate,$_SESSION['gameID']);
 	
-	session_write_close();
-
-/*
-	if($state["end"]==True){
-		header('Location:');
-	}
-	*/
-	echo $json_output;
+	echo json_encode($json_output);
 }
-die;
+if($state["end"]== True){
+		//status 3 for end game.
+		$_SESSION['status'] = 3;
+		header('Location:reactivate.php');
+}
+
+session_write_close();
+exit;
 ?>

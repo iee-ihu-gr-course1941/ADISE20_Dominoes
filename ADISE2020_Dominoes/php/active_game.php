@@ -18,7 +18,7 @@
 	else {
 		echo $dbcon->error();
 	}
-	if ($activeG_numrows > 1) {
+	if ($activeG_numrows > 0) {
 		$found = false;
 		while(($activeG_row = $activeG_check->fetch_assoc())&& $found != true ) {
 		
@@ -54,8 +54,9 @@
 			}
 		}
 	}
-	elseif ($activeG_numrows <= 1) {
+	elseif ($activeG_numrows == 0) {
 		$_SESSION['loginMessage'] = 'The game has not been set.';
+		
 	}
 	else {
 		$_SESSION['loginMessage'] = 'Connection error.';
@@ -63,5 +64,4 @@
 	
 	session_write_close();
 
-	exit;
 ?>

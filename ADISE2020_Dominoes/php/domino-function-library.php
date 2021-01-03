@@ -255,19 +255,21 @@
     function isItOver($state){
         $hand = getCurrentPlayerHand($state);
         $pile = $state["pile"];
+		if (session_status() !== PHP_SESSION_ACTIVE) {
+				session_start();
+		}
+		// places the end message in session.
         if(empty($hand)){
-            echo "The Game is over! ". $state["current-player"] . " won!";
+			$_SESSION['EndMessage'] = "The Game is over! ". $state["current-player"] . " won!";
             //maybe freeze all html elements so he cant make any more moves?
             $state["end"] = TRUE;
         }elseif(empty($pile)){
             $winPlayerIndex = countPoints($state);
             if($winPlayerIndex != -1){
                $state["end"] = TRUE;
-               echo "The Game is over! ". $state["players"][$winPlayerIndex]["id"] . " won!";
-               echo '<br />';
+			   $_SESSION['EndMessage'] = "The Game is over! ". $state["players"][$winPlayerIndex]["id"] . " won!";
             }else{
-               echo "its a draw.";
-               echo '<br />';
+               $_SESSION['EndMessage'] = "its a draw.";
             }
         }
     }
@@ -318,14 +320,14 @@
             $index=1;
         }
         $hand = $state["players"][$index]["hand"];
-        $jsonHand = json_encode($hand);
-        return $jsonHand;
+        //$jsonHand = json_encode($hand);
+        return $hand;
     }
 
     function getBoardToJSON($state) {
         $board = $state["board"];
-        $jsonBoard = json_encode($board);
-        return $jsonBoard;
+        //$jsonBoard = json_encode($board);
+        return $board;
     }
 
 
@@ -335,27 +337,23 @@
         $jsonPile = json_encode($pile);
         return $jsonPile;
     }
-
     
     function jsonToPile($jsonPile){
         $newPile = json_decode($jsonPile, true);
         $state["pile"] = $newPile;
         return $state;
     }
-
     function handToJSON($state, $playerOffset){
         $hand = $state["players"][$playerOffset]["hand"];
         $jsonHand = json_encode($hand);
         return $jsonHand;
     }
-
     
     function jsonTohand($jsonHand, $playerOffset){
         $newHand = json_decode($jsonHand, true);
         $state["players"][$playerOffset]["hand"] = $newHand;
         return $state;
     }
-
  */
 
 
