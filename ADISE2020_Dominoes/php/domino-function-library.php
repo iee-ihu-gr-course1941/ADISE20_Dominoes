@@ -23,7 +23,7 @@
         }
         else
         {
-            echo 'error';
+            //echo 'error';
         }
         //dhmiourgei to deck
         $tilesRange = count($possible_tiles);
@@ -156,15 +156,22 @@
         return $state;
     }
 
-    //remove the given domino from player
+    /*remove the given domino from player
     function removeDominoFromPlayer($state, $domino) {
         $oldHand = getCurrentPlayerHand($state);
         $newHand = array_filter($oldHand,  function($oldHand) use($domino){
             $tempFront = $oldHand["front"];
             $tempBack = $oldHand["back"];
-            return $oldHand["front"] != $domino["front"] || $oldHand["back"] != $domino["back"];
+            return $oldHand["front"] != $domino["front"] && $oldHand["back"] != $domino["back"];
         });
         return setCurrentPlayerHand($state,$newHand); 
+    }*/
+	
+	function unsetDominoFromHand($state,$domino){
+        $oldHand = getCurrentPlayerHand($state);
+        $index = findDominoInHand($state,$domino);
+		unset($oldHand[$index]);
+        return setCurrentPlayerHand($state,$oldHand);
     }
         
 
@@ -195,20 +202,20 @@
     function addDominoToBoard($state, $domino) {
         $board = $state["board"];
         if (empty($board)){
-            $state = removeDominoFromPlayer($state, $domino);
+            $state = unsetDominoFromHand($state,$domino);
             array_push($state["board"],$domino);
         }else{
             $lastElement =  array_pop($board);
             $firstElemet = array_shift($board);
             if($domino["front"] == $lastElement["back"]){
-                $state = removeDominoFromPlayer($state, $domino);
+                $state = unsetDominoFromHand($state,$domino);
                 array_push($state["board"],$domino);
             }elseif($domino["back"] == $lastElement["front"]){
-                $state = removeDominoFromPlayer($state, $domino);
+                $state = unsetDominoFromHand($state,$domino);
                 array_unshift($state["board"],$domino);
             }else{
                 //add maybe a pop up window for illegal move
-                echo ("invalid play");
+                //echo ("invalid play");
             }
         }
         return $state;
@@ -239,7 +246,7 @@
                 return $num1;
             }
         }
-        echo"there was an error try again";
+        //echo"there was an error try again";
         return -1;
     }
 
@@ -297,7 +304,7 @@
         }elseif($adderPlayer2 > $adderPlayer1){
             return 1;
         }else{
-            echo "there was an error";
+            //echo "there was an error";
         }
 
     }

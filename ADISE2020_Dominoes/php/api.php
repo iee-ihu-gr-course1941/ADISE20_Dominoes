@@ -42,16 +42,16 @@ if (isset($_GET['button'])) {
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
     } else if ($_GET['button'] == "play") {
-        playDomino($state, $_GET['front'], $_GET['back']);
+        $state = playDomino($state, $_GET['front'], $_GET['back']);
         $json_output['board'] = getBoardToJSON($state);
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
     } else if ($_GET['button'] == "flip") {
-        flipDominoInMyHand($state, $_GET['front'], $_GET['back']);
+        $state = flipDominoInMyHand($state, $_GET['front'], $_GET['back']);
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
     } else if ($_GET['button'] == "draw") {
-        takeFromPile($state);
+        $state = takeFromPile($state);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
     }
