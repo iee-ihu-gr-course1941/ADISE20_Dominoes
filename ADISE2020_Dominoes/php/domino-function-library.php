@@ -23,7 +23,7 @@
         }
         else
         {
-            //echo 'error';
+            echo 'error';
         }
         //dhmiourgei to deck
         $tilesRange = count($possible_tiles);
@@ -86,6 +86,7 @@
 
     //call at the start of the game if we need a redraw
     function redraw($state){
+        print_r("wait while we are redrawing");
         $deck = deck();
         $startingDeck = shuffleDeck($deck);
         $state["players"][0]["hand"] = take(6, $startingDeck);
@@ -173,9 +174,9 @@
         $state["pile"] = drop(1, $oldPile);
         $state = addDominoToPlayer($state, take(1, $oldPile));
         isItOver($state);
-        return nextTurn($state);
+        return $state;
     }   
-    /*
+    
     function printBoard($state){
         var_dump($state["board"]);
     }
@@ -184,7 +185,7 @@
         $playerIndex = $state["current-player"];
         var_dump($state["players"][$playerIndex]["hand"]);
     }
-    */
+
 
     function nextTurn($state) {
         $state["current-player"] ^= 1; //basically it functions as an XNOR gate 0-0=1 // 1-1=0
@@ -207,7 +208,7 @@
                 array_unshift($state["board"],$domino);
             }else{
                 //add maybe a pop up window for illegal move
-                //echo ("invalid play");
+                echo ("invalid play");
             }
         }
         return $state;
@@ -226,9 +227,6 @@
         $domino = ["front" => $front, "back" => $back];
         $newDomino = flipDomino($domino);
         $dominoIndex = findDominoInHand($state,$domino);
-        if($dominoIndex == -1){
-            return $state;
-        }
         $playerIndex = $state["current-player"];
         $state["players"][$playerIndex]["hand"][$dominoIndex] = $newDomino;
         return $state;
@@ -241,6 +239,7 @@
                 return $num1;
             }
         }
+        echo"there was an error try again";
         return -1;
     }
 
@@ -298,7 +297,7 @@
         }elseif($adderPlayer2 > $adderPlayer1){
             return 1;
         }else{
-            //echo "there was an error";
+            echo "there was an error";
         }
 
     }
@@ -329,6 +328,62 @@
         $board = $state["board"];
         //$jsonBoard = json_encode($board);
         return $board;
+    }
+    
+    //helper function to check if a game is active under conditions.
+    //the function takes our current logged in player and matches him with another active player,
+    //then checks if the two have an active game and returns true on line 361,
+    //in all other instances it returns false as stated on line 364;
+    function check_active_game() {
+        global $dbcon;
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+        $_SESSION['active_G'] = false;
+        $player1 = $_SESSION['player1'];
+        
+        //$rows_active_players = $active_players->fetch_all(MYSQLI_ASSOC);
+        //$inline_active_players = implode(',',$rows_active_players[0]);
+
+        $query = "SELECT gameID,player1,player2 FROM state 
+            WHERE (player1 = '$player1' OR player2 = '$player1') 
+            AND (player1 IN (SELECT username FROM active_players WHERE username <> '$player1') 
+                OR player2 IN (SELECT username FROM active_players WHERE username <> '$player1'))";
+        $active_game = $dbcon->query($query);
+
+        if ($active_game != false) {
+            if ($active_game->num_rows == 1) {
+                $active_game_row = $active_game->fetch_assoc();
+                $_SESSION['gameID'] = $active_game_row['gameID'];
+                $_SESSION['player1'] = $active_game_row['player1'];
+                $_SESSION['player2'] = $active_game_row['player2'];
+                $_SESSION['active_G'] = true;
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function getActivePlayer($gameID) {
+        global $dbcon;
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+        $query = "SELECT player1, player2 FROM state WHERE gameID = $gameID";
+        $game = $dbcon->query($query);
+        if ($game !== false) {
+            $game_row = $game->fetch_assoc();
+            if ($_SESSION['user'] == $game_row['player1']) {
+                return $game_row['player1'];
+            }
+            else {
+                return $game_row['player2'];
+            }
+        }
+        else {
+            return false;
+        }
+        //if ($_SESSION[''])
     }
 
 
