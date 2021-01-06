@@ -216,12 +216,13 @@
                 return $state;
             }
         }else{
+            $firstElement = array_shift($board);
             $lastElement =  array_pop($board);
-            $firstElemet = array_shift($board);
+
             if($domino["front"] == $lastElement["back"]){
                 $state = unsetDominoFromHand($state,$domino);
                 array_push($state["board"] , $domino);
-            }elseif($domino["back"] == $lastElement["front"]){
+            }elseif($domino["back"] == $firstElement["front"]){
                 $state = unsetDominoFromHand($state,$domino);
                 array_unshift($state["board"], $domino);
             }else{
@@ -279,7 +280,7 @@
 				session_start();
 		}
 		// places the end message in session.
-        if(empty($hand)){
+        if(isHandEmpty($hand)){
 			$_SESSION['EndMessage'] = "The Game is over! ". $state["current-player"] . " won!";
             //maybe freeze all html elements so he cant make any more moves?
             $state["end"] = TRUE;
@@ -292,6 +293,15 @@
                $_SESSION['EndMessage'] = "its a draw.";
             }
         }
+    }
+
+    function isHandEmpty($hand){
+        foreach($hand as $num1 => $value1){
+            if(($value1["front"] != " ") || ($value1["back"] != " ")){
+                return FALSE;
+            }
+        }
+        return TRUE;
     }
     
     //function to cound all points to both player hands
