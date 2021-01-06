@@ -12,7 +12,7 @@
                 top:6%;
                 left:2%;
                 width:96%;
-                height:40%;
+                height:30%;
                 text-align:center;
                 border-color:gray;
                 border-style:solid;
@@ -21,10 +21,10 @@
                 background-color:gainsboro;
             }
             #iner_hand{
-                top:48%;
+                top:38%;
                 left:2%;
                 width:96%;
-                height:20%;
+                height:15%;
                 text-align:center;
                 border-color:aquamarine;
                 border-style:solid;
@@ -33,7 +33,7 @@
                 background-color:aliceblue;
             }
             #iner_form{
-                top:72%;
+                top:57%;
                 left:2%;
                 width:96%;
                 position:absolute;
@@ -49,8 +49,8 @@
                             var json_response = JSON.parse(this.responseText);
                             display_board(json_response.board);
                             display_hand(json_response.hand);
-							document.getElementById("errorMessage").innerText ="Current Player: " +  json_response.cp;
-                        } else {
+							document.getElementById("errorMessage").innerText ="Current Player: " + json_response.cp;
+                        }else {
                             document.getElementById("errorMessage").innerText = "The server could not connect";
                         }
                     }
@@ -58,6 +58,9 @@
                 xhttp.open("GET", "php/api.php?&button=start", true);
                 xhttp.send();
             }
+			//window.onload = function() {
+            //  setInterval(api, 500);
+            //};
 
             function draw_api() {
                 var xhttp = new XMLHttpRequest();
@@ -68,7 +71,12 @@
 							var json_response = JSON.parse(this.responseText);
                             display_hand(json_response.hand);
 							document.getElementById("errorMessage").innerText ="Current Player: " +  json_response.cp;
-                        } else {
+							if (json_response.goto_url !== undefined && json_response.goto_url !== null) {
+								console.log(this.responseText);
+								window.location = json_response.goto_url;
+							}
+                        } 
+						else {
                             document.getElementById("errorMessage").innerText = "The server could not connect";
                         }
                     }
@@ -127,7 +135,12 @@
 									display_hand(json_response.hand);
 									document.getElementById("errorMessage").innerText ="Current Player: " +  json_response.cp;
                                     //To response einai to echo apo thn php.
-                                } else {
+									if (json_response.goto_url !== undefined && json_response.goto_url !== null) {
+										console.log(this.responseText);
+										window.location = json_response.goto_url;
+									}
+                                }
+								else {
                                     document.getElementById("errorMessage").innerText = "The server could not connect";
                                 }
                             }
@@ -205,6 +218,7 @@
                             <input type="submit" name="play_tile" style="display:none">
                             <button id="flip_tile" onclick="flip_api()">Flip Tile</button>
                         </form>
+						<br/>
                         <button id="draw_tile" onclick="draw_api()">Draw Tile</button><br/><br/>
                         <span id="errorMessage" style="color:red;font-weight:bold"></span>
                     </div>
