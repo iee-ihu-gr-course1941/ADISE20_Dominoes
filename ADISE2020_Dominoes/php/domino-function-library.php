@@ -86,7 +86,6 @@
 
     //call at the start of the game if we need a redraw
     function redraw($state){
-        print_r("wait while we are redrawing");
         $deck = deck();
         $startingDeck = shuffleDeck($deck);
         $state["players"][0]["hand"] = take(6, $startingDeck);
@@ -170,7 +169,7 @@
 	function unsetDominoFromHand($state,$domino){
         $oldHand = getCurrentPlayerHand($state);
         $index = findDominoInHand($state,$domino);
-		unset($oldHand[$index]);
+		$oldHand[$index] = ["front" => " ", "back" => " "];
         return setCurrentPlayerHand($state,$oldHand);
     }
         
@@ -183,7 +182,7 @@
         isItOver($state);
         return $state;
     }   
-    
+   /* 
     function printBoard($state){
         var_dump($state["board"]);
     }
@@ -192,7 +191,7 @@
         $playerIndex = $state["current-player"];
         var_dump($state["players"][$playerIndex]["hand"]);
     }
-
+    */
 
     function nextTurn($state) {
         $state["current-player"] ^= 1; //basically it functions as an XNOR gate 0-0=1 // 1-1=0
@@ -201,21 +200,32 @@
     
     function addDominoToBoard($state, $domino) {
         $board = $state["board"];
+        $lenght = count($board);
         if (empty($board)){
             $state = unsetDominoFromHand($state,$domino);
-            array_push($state["board"],$domino);
+            array(array_push($state["board"], $domino));
+        }elseif($lenght==1){
+            $onlyElement =  array_pop($board);
+            if($domino["front"] == $onlyElement["back"]){
+                $state = unsetDominoFromHand($state,$domino);
+                array_push($state["board"] , $domino);
+            }elseif($domino["back"] == $onlyElement["front"]){
+                $state = unsetDominoFromHand($state,$domino);
+                array_unshift($state["board"], $domino);
+            }else{
+                return $state;
+            }
         }else{
             $lastElement =  array_pop($board);
             $firstElemet = array_shift($board);
             if($domino["front"] == $lastElement["back"]){
                 $state = unsetDominoFromHand($state,$domino);
-                array_push($state["board"],$domino);
+                array_push($state["board"] , $domino);
             }elseif($domino["back"] == $lastElement["front"]){
                 $state = unsetDominoFromHand($state,$domino);
-                array_unshift($state["board"],$domino);
+                array_unshift($state["board"], $domino);
             }else{
-                //add maybe a pop up window for illegal move
-                //echo ("invalid play");
+                return $state;
             }
         }
         return $state;
@@ -234,6 +244,9 @@
         $domino = ["front" => $front, "back" => $back];
         $newDomino = flipDomino($domino);
         $dominoIndex = findDominoInHand($state,$domino);
+        if($dominoIndex == -1){
+            return $state;
+        }
         $playerIndex = $state["current-player"];
         $state["players"][$playerIndex]["hand"][$dominoIndex] = $newDomino;
         return $state;

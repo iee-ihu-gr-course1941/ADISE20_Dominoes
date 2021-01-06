@@ -33,24 +33,29 @@ $state = jsonToState($JSONstate);
 
 //$_SESSION['current_P'] = $state['current-player'];
 $_SESSION['current_P'] = getActivePlayer($_SESSION['gameID']);
+$player = getCurrentPlayerId($state);
 
-if (isset($_GET['button'])) {
+$button = $_GET['button'];
+if ($_SESSION['current_P'] != $player){
+	$button = "start";
+}
 
+if (isset($button)) {
     $json_output = array();
-    if ($_GET['button'] == "start") {
+    if ($button== "start") {
         $json_output['board'] = getBoardToJSON($state);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
-    } else if ($_GET['button'] == "play") {
+    } else if ($button== "play") {
         $state = playDomino($state, $_GET['front'], $_GET['back']);
         $json_output['board'] = getBoardToJSON($state);
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
-    } else if ($_GET['button'] == "flip") {
+    } else if ($button == "flip") {
         $state = flipDominoInMyHand($state, $_GET['front'], $_GET['back']);
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
-    } else if ($_GET['button'] == "draw") {
+    } else if ($button == "draw") {
         $state = takeFromPile($state);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
@@ -60,6 +65,8 @@ if (isset($_GET['button'])) {
 
     echo json_encode($json_output);
 }
+
+
 if ($state["end"] == True) {
     //status 3 for end game.
     $_SESSION['status'] = 3;
