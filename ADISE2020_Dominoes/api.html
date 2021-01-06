@@ -40,6 +40,8 @@
             }
         </style>
         <script type="text/javascript">
+		 //var xhttp = new XMLHttpRequest();
+		 //xhttp.open("GET", "php/api.php?&button=start", true);
             function api() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
@@ -63,10 +65,13 @@
                 };
                 xhttp.open("GET", "php/api.php?&button=start", true);
                 xhttp.send();
+				
             }
-			//window.onload = function() {
-            //  setInterval(api, 500);
-            //};
+			
+			function start() {
+				setInterval(api, 1000);
+				setInterval(function(){console.clear();}, 3000);
+			};
 
             function draw_api() {
                 var xhttp = new XMLHttpRequest();
@@ -199,7 +204,7 @@
         </script>
         <!-- #EndEditable -->
     </head>
-    <body onload="api()">
+    <body onload="start()">
         <div id="main">
             <div id="head">
                 <h1>Classic Dominoes</h1>
