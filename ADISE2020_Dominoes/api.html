@@ -48,7 +48,8 @@
                             console.log(this.responseText);
                             var json_response = JSON.parse(this.responseText);
                             display_board(json_response.board);
-                            display_hand(json_response.hand);
+                            display_hand(json_response.hand);                            
+                            document.getElementById("errorMessage").innerText ="Current Player: " +  json_response.cp;
                         } else {
                             document.getElementById("errorMessage").innerText = "The server could not connect";
                         }
