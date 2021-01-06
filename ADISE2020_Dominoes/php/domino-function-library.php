@@ -132,6 +132,10 @@
         return $state;
     }
 
+    function getEnd($state){
+        return $state["end"];
+    }
+
     function getCurrentPlayerHand($state) {
         $playerIndex = $state["current-player"];
         return $state["players"][$playerIndex]["hand"];
@@ -236,9 +240,12 @@
     function playDomino($state, $front , $back){
         $playerIndex = $state["current-player"];
         $domino = ["front" => $front, "back" => $back];
-        $state  = addDominoToBoard($state,$domino);
-        isItOver($state);
-        return nextTurn($state); //to change player turns
+        $newstate  = addDominoToBoard($state,$domino);
+        if($newstate["board"] == $state["board"]){
+            return $state;
+        }
+        isItOver($newstate);
+        return nextTurn($newstate); //to change player turns
     }
 
     function flipDominoInMyHand($state, $front , $back){
