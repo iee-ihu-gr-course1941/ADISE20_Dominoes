@@ -40,8 +40,16 @@ if ($_SESSION['current_P'] != $player){
 	$button = "start";
 }
 
+$json_output = array();
+ 
+if (isItOver($state)) {
+		//status 3 for end game.
+		$json_output['goto_url'] = 'php/end.php';
+}
+$json_output['end'] = $state["end"];
+
 if (isset($button)) {
-    $json_output = array();
+   
     if ($button== "start") {
         $json_output['board'] = getBoardToJSON($state);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
@@ -66,14 +74,6 @@ if (isset($button)) {
     }
     $JSONstate = stateToJSON($state);
     updateTableFromState($JSONstate, $_SESSION['gameID']);
- 
-
-	if (getEnd($state)) {
-		//status 3 for end game.
-		$_SESSION['status'] = 3;
-		//header('Location:reactivate.php');
-		$json_output['goto_url'] = 'reactivate.php';
-	}
 	
 	echo json_encode($json_output);
 }

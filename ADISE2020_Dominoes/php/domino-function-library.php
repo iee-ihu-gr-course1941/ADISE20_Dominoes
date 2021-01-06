@@ -276,26 +276,44 @@
 
     //function that checks when the game is over
     function isItOver($state){
-        $hand = getCurrentPlayerHand($state);
+        //$hand = getCurrentPlayerHand($state);
+		$player1Hand =  $state["players"][0]["hand"];
+        $player2Hand =  $state["players"][1]["hand"];
         $pile = $state["pile"];
 		if (session_status() !== PHP_SESSION_ACTIVE) {
 				session_start();
 		}
 		// places the end message in session.
 		
-        if(isHandEmpty($hand)){
-			$_SESSION['EndMessage'] = "The Game is over! ". $state["current-player"] . " won!";
+        if(isHandEmpty($player1Hand)){
+			$_SESSION['status'] = 3;
+			$_SESSION['win'] = $state["players"][0]["id"];
+			$_SESSION['EndMessage'] = "The Game is over! ". $state["players"][0]["id"] . " won!";
             //maybe freeze all html elements so he cant make any more moves?
             $state["end"] = TRUE;
-        }elseif(empty($pile)){
+			return true;
+        }
+		elseif(isHandEmpty($player2Hand)){
+			$_SESSION['status'] = 3;
+			$_SESSION['win'] = $state["players"][1]["id"];
+			$_SESSION['EndMessage'] = "The Game is over! ". $state["players"][1]["id"] . " won!";
+            //maybe freeze all html elements so he cant make any more moves?
+            $state["end"] = TRUE;
+			return true;
+        }
+		elseif(empty($pile)){
             $winPlayerIndex = countPoints($state);
             if($winPlayerIndex != -1){
                $state["end"] = TRUE;
+			   $_SESSION['status'] = 3;
+			   $_SESSION['win'] = $state["players"][$winPlayerIndex]["id"];
 			   $_SESSION['EndMessage'] = "The Game is over! ". $state["players"][$winPlayerIndex]["id"] . " won!";
+			   return true;
             }else{
                $_SESSION['EndMessage'] = "its a draw.";
             }
         }
+		return false;
     }
 	 function isHandEmpty($hand){
         foreach($hand as $num1 => $value1){
