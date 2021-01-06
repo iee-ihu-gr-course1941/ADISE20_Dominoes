@@ -180,7 +180,7 @@
         $state["pile"] = drop(1, $oldPile);
         $state = addDominoToPlayer($state, take(1, $oldPile));
         isItOver($state);
-        return $state;
+        return nextTurn($state);
     }   
    /* 
     function printBoard($state){
@@ -304,10 +304,14 @@
 
         $numMax = [0,0];
         foreach($player1Hand as $num1 => $value1){
-            $adderPlayer1 = $adderPlayer1 + $value1["front"] + $value1["back"];
+            if(($value1["front"] != " ") || ($value1["back"] != " ")){
+                $adderPlayer1 = $adderPlayer1 + $value1["front"] + $value1["back"];
+            }
         }
         foreach($player2Hand as $num2 => $value2){
-            $adderPlayer2 = $adderPlayer2 + $value2["front"] + $value2["back"];
+            if(($value2["front"] != " " || $value2["back"] != " ")){
+                $adderPlayer2 = $adderPlayer2 + $value2["front"] + $value2["back"];
+            }
         }
 
         if($adderPlayer2 == $adderPlayer1){

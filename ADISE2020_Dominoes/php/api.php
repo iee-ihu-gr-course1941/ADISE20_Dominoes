@@ -45,18 +45,22 @@ if (isset($button)) {
     if ($button== "start") {
         $json_output['board'] = getBoardToJSON($state);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
+        $json_output['cp'] = $player ;
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
     } else if ($button== "play") {
         $state = playDomino($state, $_GET['front'], $_GET['back']);
         $json_output['board'] = getBoardToJSON($state);
+        $json_output['cp'] = $player ;
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
     } else if ($button == "flip") {
         $state = flipDominoInMyHand($state, $_GET['front'], $_GET['back']);
+        $json_output['cp'] = $player ;
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
     } else if ($button == "draw") {
         $state = takeFromPile($state);
+        $json_output['cp'] = $player ;
         //$json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['player1']);
         $json_output['hand'] = getPlayerHandToJSON($state, $_SESSION['current_P']);
     }
