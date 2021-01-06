@@ -48,8 +48,8 @@
                             console.log(this.responseText);
                             var json_response = JSON.parse(this.responseText);
                             display_board(json_response.board);
-                            display_hand(json_response.hand);                            
-                            document.getElementById("errorMessage").innerText ="Current Player: " +  json_response.cp;
+                            display_hand(json_response.hand);
+							document.getElementById("errorMessage").innerText ="Current Player: " +  json_response.cp;
                         } else {
                             document.getElementById("errorMessage").innerText = "The server could not connect";
                         }
@@ -67,6 +67,7 @@
 							console.log(this.responseText);
 							var json_response = JSON.parse(this.responseText);
                             display_hand(json_response.hand);
+							document.getElementById("errorMessage").innerText ="Current Player: " +  json_response.cp;
                         } else {
                             document.getElementById("errorMessage").innerText = "The server could not connect";
                         }
@@ -92,6 +93,7 @@
                                     console.log(this.responseText);
 									var json_response = JSON.parse(this.responseText);
 									display_hand(json_response.hand);
+									document.getElementById("errorMessage").innerText ="Current Player: " +  json_response.cp;
                                 } else {
                                     document.getElementById("errorMessage").innerText = "The server could not connect";
                                 }
@@ -123,6 +125,7 @@
 									var json_response = JSON.parse(this.responseText);
 									display_board(json_response.board);
 									display_hand(json_response.hand);
+									document.getElementById("errorMessage").innerText ="Current Player: " +  json_response.cp;
                                     //To response einai to echo apo thn php.
                                 } else {
                                     document.getElementById("errorMessage").innerText = "The server could not connect";
