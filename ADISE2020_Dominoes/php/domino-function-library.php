@@ -1,6 +1,6 @@
 <?php 
 
-    //creating an assosiative array 
+   //creating an assosiative array 
     function deck(){
         if(!isset($connected)||$connected == false){
             require "dbconnect.php";
@@ -132,10 +132,6 @@
         return $state;
     }
 
-    function getEnd($state){
-        return $state["end"];
-    }
-
     function getCurrentPlayerHand($state) {
         $playerIndex = $state["current-player"];
         return $state["players"][$playerIndex]["hand"];
@@ -190,7 +186,6 @@
     function printBoard($state){
         var_dump($state["board"]);
     }
-
     function printCurrentPlayerHand($state){
         $playerIndex = $state["current-player"];
         var_dump($state["players"][$playerIndex]["hand"]);
@@ -220,9 +215,8 @@
                 return $state;
             }
         }else{
-            $firstElement = array_shift($board);
             $lastElement =  array_pop($board);
-
+            $firstElement = array_shift($board);
             if($domino["front"] == $lastElement["back"]){
                 $state = unsetDominoFromHand($state,$domino);
                 array_push($state["board"] , $domino);
@@ -240,10 +234,11 @@
     function playDomino($state, $front , $back){
         $playerIndex = $state["current-player"];
         $domino = ["front" => $front, "back" => $back];
-        $newstate  = addDominoToBoard($state,$domino);
+		$newstate  = addDominoToBoard($state,$domino);
         if($newstate["board"] == $state["board"]){
             return $state;
         }
+        //$state  = addDominoToBoard($state,$domino);
         isItOver($newstate);
         return nextTurn($newstate); //to change player turns
     }
@@ -287,6 +282,7 @@
 				session_start();
 		}
 		// places the end message in session.
+		
         if(isHandEmpty($hand)){
 			$_SESSION['EndMessage'] = "The Game is over! ". $state["current-player"] . " won!";
             //maybe freeze all html elements so he cant make any more moves?
@@ -301,8 +297,7 @@
             }
         }
     }
-
-    function isHandEmpty($hand){
+	 function isHandEmpty($hand){
         foreach($hand as $num1 => $value1){
             if(($value1["front"] != " ") || ($value1["back"] != " ")){
                 return FALSE;
@@ -426,6 +421,10 @@
         }
         //if ($_SESSION[''])
     }
+	
+	 function getEnd($state){
+        return $state["end"];
+    }
 
 
 /*
@@ -452,6 +451,5 @@
         return $state;
     }
  */
-
-
+ 
 ?>
